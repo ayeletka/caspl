@@ -1,0 +1,16 @@
+The argv: -d
+The filter characters are: h , H
+System_Call return num: 26
+System_Call_ID: 4
+System_Call return num: 1
+System_Call_ID: 3
+The input is: 
+fhjst
+
+is filter: yes
+System_Call return num: 1
+System_Call_ID: 4
+System_Call return num: 1
+System_Call_ID: 4
+System_Call return num: 6
+System_Call_ID: 4

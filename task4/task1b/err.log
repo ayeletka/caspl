@@ -1,0 +1,37 @@
+The argv: -d
+The argv: -o
+System_Call return num: 4
+System_Call_ID: 5
+System_Call return num: 1
+System_Call_ID: 3
+System_Call return num: 1
+System_Call_ID: 3
+System_Call return num: 1
+System_Call_ID: 3
+System_Call return num: 1
+System_Call_ID: 3
+System_Call return num: 1
+System_Call_ID: 3
+System_Call return num: 1
+System_Call_ID: 3
+System_Call return num: 1
+System_Call_ID: 3
+System_Call return num: 1
+System_Call_ID: 3
+System_Call return num: 1
+System_Call_ID: 3
+System_Call return num: 1
+System_Call_ID: 3
+System_Call return num: 1
+System_Call_ID: 3
+System_Call return num: 1
+System_Call_ID: 3
+System_Call return num: 0
+System_Call_ID: 3
+is filter: yes
+System_Call return num: 0
+System_Call_ID: 6
+stdin is: 3
+System_Call return num: 0
+System_Call_ID: 6
+stdout is: 4

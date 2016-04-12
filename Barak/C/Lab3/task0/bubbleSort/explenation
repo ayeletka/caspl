@@ -1,0 +1,5 @@
+There was a segmentation fault because the for was:
+i=0; i<=n
+instead of:
+i=0; i<n
+...

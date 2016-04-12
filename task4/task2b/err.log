@@ -1,0 +1,20 @@
+System_Call return num: 3
+System_Call_ID: 5
+System_Call return num: 152
+System_Call_ID: 141
+Name: util.c
+Length: 20
+Name: util.h
+Length: 20
+Name: main.c
+Length: 20
+Name: ae.txt
+Length: 20
+Name: .
+Length: 16
+Name: start.s
+Length: 20
+Name: makefile
+Length: 20
+Name: ..
+Length: 16
