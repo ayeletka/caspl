@@ -15,7 +15,6 @@ int hexvalue(char c){
 //extern int my_func(char* buf);
 int main(int argc, char** argv)
 {
-
   printf("value %d \n", hexvalue('B'));
   long long *x_num;
   long long allocated[1];
