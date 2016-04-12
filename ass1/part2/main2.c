@@ -3,7 +3,7 @@
 
 
 //extern int my_func(char* buf);
-
+test test
 int main(int argc, char** argv)
 {
   long long *x_num;
