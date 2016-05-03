@@ -24,6 +24,10 @@ int main (int argc , char* argv[], char* envp[])
     fgets(input, 2048, stdin);
     cmdLine line = *parseCmdLines(input);
     printf("%s\n", input);
+    if(strcmp(input,"quit")==0){
+      printf("%s\n","bye" );
+      exit(0);
+    }
     execute(&line);
   }
   printf("\nBye!\n");

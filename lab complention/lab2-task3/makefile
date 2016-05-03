@@ -1,7 +1,7 @@
 main: main.o
 	gcc -g -Wall -m32 -ansi -o main main.o
-main.o: count-words.c
-	gcc -g -Wall -m32 -ansi -c -o main.o count-words.c
+main.o: task3.c
+	gcc -g -Wall -m32 -ansi -c -o main.o task3.c
 
 
 
