@@ -1,0 +1,18 @@
+pis id: 5039
+executing command: ls
+pis id: 0
+executing command: ls
+pis id: 5043
+executing command: cd
+pis id: 0
+executing command: cd
+pis id: 5045
+executing command: ls
+pis id: 0
+executing command: ls
+pis id: 5048
+executing command: cd
+pis id: 0
+executing command: cd
+ho no! error in chdir!: No such file or directory
+ho no! error in chdir!

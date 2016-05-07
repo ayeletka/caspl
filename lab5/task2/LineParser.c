@@ -179,7 +179,7 @@ void freeCmdLines(cmdLine *pCmdLine)
   FREE(pCmdLine);
 }
 
-int replaceCmdArg2(cmdLine *pCmdLine, int num, const char *newString)
+int replaceCmdArg(cmdLine *pCmdLine, int num, const char *newString)
 {
   if (num >= pCmdLine->argCount)
     return 0;
@@ -188,5 +188,3 @@ int replaceCmdArg2(cmdLine *pCmdLine, int num, const char *newString)
   ((char**)pCmdLine->arguments)[num] = strClone(newString);
   return 1;
 }
-
-kkk
