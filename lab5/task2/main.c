@@ -95,14 +95,11 @@ char* find(char* name) {
 	return "error";
 }
 
-
 void printVars() {
 	map* pointer = mapOfVars;
 	printf("----  env variables:  ----\n");
 	while (pointer != 0) {
 		printf("%s=%s\n", pointer->name, pointer->value);
-		if (pointer->next != 0)
-			printf("==> %s\n", pointer->next->name );
 		pointer = pointer->next;
 	}
 }
