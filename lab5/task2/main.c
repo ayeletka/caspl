@@ -115,9 +115,6 @@ void printHistory() {
 	}
 }
 
-
-
-
 int execute(cmdLine *pCmdLine) {
 	pid_t PID = fork();
 	fprintf(stderr, "pis id: %d\n", PID );
