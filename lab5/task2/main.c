@@ -7,10 +7,10 @@
 #include <sys/wait.h>
 
 #define historyLen 10
+#define maxBuffer 2048
 
-char* history[historyLen];
+char history[historyLen][maxBuffer];
 int indexH;
-int indexVar;
 typedef struct map
 {
 	char* name;
@@ -20,68 +20,89 @@ typedef struct map
 
 map* mapOfVars;
 
+void freeMapOfVars() {
+	map* pointer = mapOfVars;
+	while (pointer != 0) {
+		free(pointer->value);
+		free(pointer->name);
+		map* temp = pointer->next;
+		free(pointer);
+		pointer = temp;
+	}
+}
+
 void delete(char* name) {
 	map* pointer = mapOfVars;
-	int i;
-	for (i = 0; i < indexVar; i++) {
+	map* prev = mapOfVars;
+	while (pointer != 0) {
 		if (strcmp(pointer->name, name) == 0) {
+			if (pointer == mapOfVars) {
+				mapOfVars = mapOfVars->next;
+			}
+			else {
+				prev->next = pointer->next;
+			}
 			free(pointer->value);
 			free(pointer->name);
+			free(pointer);
 			return;
 		}
+		prev = pointer;
 		pointer = pointer->next;
 	}
 	fprintf(stderr, "delete error: couldn't find %s\n", name );
 }
 
 void set(char* name, char* value) {
-	if (indexVar == 0) {
+	if (mapOfVars == 0) {
+		mapOfVars = malloc(sizeof(map));
 		mapOfVars->name = strClone(name);
 		mapOfVars->value = strClone(value);
-		mapOfVars->next = malloc(sizeof (map));
-		indexVar++;
+		mapOfVars->next = 0;
 	}
 	else {
 		map* pointer = mapOfVars;
-		int i;
-		for (i = 0; i < indexVar; i++) {
+		map* prev = mapOfVars;
+		while (pointer != 0) {
 			if (strcmp(pointer->name, name) == 0) {
 				free(pointer->value);
 				pointer->value = strClone(value);
 				return;
 			}
+			prev = pointer;
 			pointer = pointer->next;
 		}
+
+		//pointer is null:
+		pointer = malloc(sizeof(map));
 		pointer->name = strClone(name);
 		pointer->value = strClone(value);
-		pointer->next = malloc(sizeof(map));
-		indexVar++;
+		pointer->next = 0;
+		prev->next = pointer;
 	}
 }
 
 char* find(char* name) {
-	//printf("%s\n","in find!!!" );
-	int i;
 	map* pointer = mapOfVars;
 
-	for (i = 0; i < indexVar; i++) {
-		if (strcmp(pointer->name, name) == 0) {
+	while (pointer != 0) {
+		if ((strcmp(pointer->name, name) == 0) || pointer->name == name) {
 			return (pointer->value);
 		}
-		else if (pointer->name == name) return pointer->value;
-		printf("error in:%c\n", i );
 		pointer = pointer->next;
 	}
-	fprintf(stderr, "find error: couldn't find %s\n", name );
+	fprintf(stderr, "find error: couldn't find %s\n", name);
 	return "error";
 }
 
 
 void printVars() {
-	int i;
 	map* pointer = mapOfVars;
-	for (i = 0; i < indexVar; i++) {
-		printf("mapOfVars[%d]: name=%s , value=%s\n", i, pointer->name, pointer->value);
+	printf("----  env variables:  ----\n");
+	while (pointer != 0) {
+		printf("%s=%s\n", pointer->name, pointer->value);
+		if (pointer->next != 0)
+			printf("==> %s\n", pointer->next->name );
 		pointer = pointer->next;
 	}
 }
@@ -98,21 +119,21 @@ void printHistory() {
 
 
 int execute(cmdLine *pCmdLine) {
-
 	pid_t PID = fork();
 	fprintf(stderr, "pis id: %d\n", PID );
-	fprintf(stderr, "executing command: %s\n", pCmdLine->arguments[0] );
 
 	//error
 	if (PID == -1) {
 		perror("ho no! error in fork");
-		return -1;
+		exit(-1);
 	}
 	//child
 	else if (PID == 0) {
+		fprintf(stderr, "executing command: %s\n", pCmdLine->arguments[0] );
 		if (execvp(pCmdLine->arguments[0], pCmdLine->arguments) == -1) {
 			perror("ho no! error in execv");
-			return -1;
+			freeCmdLines(pCmdLine);
+			exit(-1);
 		}
 		return 0;
 	}
@@ -134,45 +155,61 @@ void printCmdLine(cmdLine *line) {
 	printf("\n");
 }
 
-void replaceDollar(char* toChange) {
+int replaceDollar(char* toChange) {
 	int i;
 	for (i = 0; i < (strlen(toChange) - 1); i++) {
 		if (toChange[i] == '$') {
 			toChange[i] = 0;
-			char copy[2048];
+			char copy[maxBuffer];
 			strcpy(copy, toChange + i + 1);
 			char* newString = find(copy);
 			if (strcmp(newString, "error") == 0) {
-				fprintf(stderr, "No arg in env to match: %s\n", copy);
-				return;
+				return -1;
 			}
 			strcat(toChange, newString);
 		}
 	}
+	return 0;
+}
+
+void insertToHistory(char* toInsert) {
+	if (toInsert[0] != '!') {
+		strcpy(history[indexH++], toInsert);
+	}
 }
 
 //returns 1 if found special argument, 0 else.
-int checkForSpecialArgument(cmdLine *pCmdLine) {
+int checkForSpecialArgument(cmdLine *pCmdLine, char* readLine) {
+	int foundCommand = 0;
 	if (strcmp(pCmdLine->arguments[0], "cd") == 0) {
-		if (chdir(pCmdLine->arguments[1]) < 0) {
+		if (pCmdLine->arguments[1][0] == '~') {
+			chdir(getenv("HOME"));
+		}
+		else if (chdir(pCmdLine->arguments[1]) < 0) {
 			fprintf(stderr, "%s\n", "ho no! error in chdir!" );
 		}
-		return 1;
+		foundCommand = 1;
 	}
-	if (strcmp(pCmdLine->arguments[0], "history") == 0) {
+
+	else if (strcmp(pCmdLine->arguments[0], "history") == 0) {
+		insertToHistory(readLine);
 		printHistory();
 		return 1;
 	}
-	if (strcmp(pCmdLine->arguments[0], "set") == 0) {
+	else if (strcmp(pCmdLine->arguments[0], "set") == 0) {
 		set(pCmdLine->arguments[1], pCmdLine->arguments[2]);
-		return 1;
+		foundCommand = 1;
 	}
-	if ( strcmp(pCmdLine->arguments[0], "delete") == 0) {
+	else if ( strcmp(pCmdLine->arguments[0], "delete") == 0) {
 		delete(pCmdLine->arguments[1]);
-		return 1;
+		foundCommand = 1;
 	}
-	if (strcmp(pCmdLine->arguments[0], "env") == 0) {
+	else if (strcmp(pCmdLine->arguments[0], "env") == 0) {
 		printVars();
+		foundCommand = 1;
+	}
+	if (foundCommand) {
+		insertToHistory(readLine);
 		return 1;
 	}
 	return 0;
@@ -182,40 +219,40 @@ int checkForSpecialArgument(cmdLine *pCmdLine) {
 int main (int argc , char* argv[], char* envp[])
 {
 	printf("%s\n", "lab 5" );
-	mapOfVars = (struct map*)malloc(sizeof(struct map));
 	while (1) {
-		char curDir[2048];
-		getcwd (curDir, 2048);
+		char curDir[maxBuffer];
+		getcwd (curDir, maxBuffer);
 		printf("%s $ ", curDir);
-		char readLine [2048];
-		fgets(readLine, 2048, stdin);
+		char readLine [maxBuffer];
+		fgets(readLine, maxBuffer, stdin);
 
 		//case: enter
 		if (readLine[0] == 10) {
 			// printf("%s $ ", curDir );
-			// fgets(readLine, 2048, stdin);
+			// fgets(readLine, maxBuffer, stdin);
 			continue;
 		}
 
 		//case: quit
 		if (strncmp(readLine, "quit", 4) == 0) {
 			printf("%s\n", "bye" );
+			freeMapOfVars();
 			exit(0);
 		}
 
 		cmdLine *line = parseCmdLines (readLine);
 		int i;
 		for (i = 0; i < (line->argCount); i++) {
-			replaceDollar(line->arguments[i]);
+			if (replaceDollar(line->arguments[i]) == -1) {
+				strcpy(line->arguments[i], "");
+			}
 		}
 
 		//case: !n
 		if (strncmp(line->arguments[0], "!", 1) == 0) {
 			int chosenIndex = atoi(&line->arguments[0][1]);
 			if (chosenIndex <= indexH) {
-				char* clone = (char*)malloc(strlen(history[chosenIndex]) + 1);
-				strcpy(clone, history[chosenIndex]);
-				history[indexH] = clone;
+				strcpy(history[indexH], history[chosenIndex]);
 				indexH++;
 				freeCmdLines(line);
 				line = parseCmdLines(history[chosenIndex]);
@@ -223,17 +260,18 @@ int main (int argc , char* argv[], char* envp[])
 			else fprintf(stderr, "%s\n", "not inbound" );
 		}
 
-		if (checkForSpecialArgument(line)) {
-			history[indexH] = strClone(readLine);
-			indexH++;
+		if (checkForSpecialArgument(line, readLine)) {
+			freeCmdLines(line);
 			continue;
 		}
 
 //case: normal command (including history)
 		else {
-			history[indexH] = strClone(readLine);
-			indexH++;
-			if (execute (line) == -1) exit(0);
+			insertToHistory(readLine);
+			if (strcmp(line->arguments[0], "") != 0) {
+				execute(line);
+			}
+			freeCmdLines(line);
 		}
 	}
 	return 0;
