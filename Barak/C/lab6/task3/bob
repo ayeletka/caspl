@@ -1,0 +1,16 @@
+hello My name is barak!
+total 84
+drwxrwxrwx 2 barak barak  4096 May 16 20:34 .
+drwxrwxrwx 6 barak barak  4096 May 16 18:32 ..
+-rw-rw-r-- 1 barak barak    24 May 16 20:09 bob
+-rw-rw-r-- 1 barak barak     2 May 15 17:44 bob2
+-rw-rw-r-- 1 barak barak     4 May 15 17:43 cat
+-rwxrw-rw- 1 barak barak  3891 May  3 19:34 LineParser.c
+-rwxrw-rw- 1 barak barak  1257 May 15 17:14 LineParser.h
+-rwxrw-rw- 1 barak barak  1259 May  3 19:34 LineParser.h~
+-rw-rw-r-- 1 barak barak  3484 May 16 19:54 LineParser.o
+-rwxrwxr-x 1 barak barak 17399 May 16 20:34 main
+-rwxrw-rw- 1 barak barak  8721 May 16 20:34 main.c
+-rw-rw-r-- 1 barak barak  7332 May 16 20:34 main.o
+-rwxrw-rw- 1 barak barak   226 Apr 28 19:34 makefile
+-rw-rw-r-- 1 barak barak    24 May 16 20:09 out.txt

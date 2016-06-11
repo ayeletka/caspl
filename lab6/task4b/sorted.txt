@@ -1,0 +1,454 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ }
+{
+{
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+} 
+	{
+	}
+	}
+	}
+	}
+	}
+	}
+	}
+	}
+	}
+	}
+	}
+	}
+	}
+	}
+	}
+	}
+	}
+	}
+	}
+	}
+	}
+	}
+	}
+	}
+	}
+	}
+	}
+	}
+		
+		}
+		}
+		}
+		}
+		}
+		}
+		}
+		}
+		}
+		}
+		}
+		}
+		}
+		}
+		}
+		}
+		}
+		}
+		}
+			}
+			}
+			}
+			}
+			}
+			}
+			}
+			}
+			}
+			}
+				}
+				}
+											
+		//case: enter
+		//case: !n
+//case: normal command (including history)
+		//case: quit
+			char copy[maxBuffer];
+		char curDir[maxBuffer];
+char* find(char* name) {
+char history[historyLen][maxBuffer];
+	char* name;
+			char* newString = find(copy);
+		char readLine [maxBuffer];
+	char* value;
+			chdir(getenv("HOME"));
+	//checking how many commands in the line
+	//child
+		//child
+			//child
+					close(leftPipe(pipes,commPointer)[0]);
+				close(leftPipe(pipes,commPointer)[0]); 
+			close(leftPipe(pipes,commPointer)[0]);
+			close(leftPipe(pipes,commPointer)[0]);
+					close(rightPipe(pipes,commPointer)[1]);
+					close(rightPipe(pipes,commPointer)[1]);
+				close(rightPipe(pipes,commPointer)[1]); 
+				close(rightPipe(pipes,commPointer)[1]); 
+		cmdLine* commPointer = pCmdLine;
+		cmdLine *line = parseCmdLines (readLine);
+	cmdLine * pointerSize=pCmdLine;
+		commCount++;
+				commPointer=commPointer->next;
+			continue;
+			continue;
+#define historyLen 10
+#define maxBuffer 2048
+		delete(pCmdLine->arguments[1]);
+				dup(leftPipe(pipes,commPointer)[0]); //dup read end
+			dup(leftPipe(pipes,commPointer)[0]); //dup read end
+				dup(rightPipe(pipes,commPointer)[1]); //dup write end
+				dup(rightPipe(pipes,commPointer)[1]); //dup write end
+			else {
+			else{
+		else {
+		else{
+	else {
+	else {
+	else{
+			else fprintf(stderr, "%s\n", "not inbound" );
+		else if (chdir(pCmdLine->arguments[1]) < 0) {
+			else if (pid == 0) {
+		else if (pid == 0) {
+	else if (PID == 0) {
+	else if ( strcmp(pCmdLine->arguments[0], "delete") == 0) {
+	else if (strcmp(pCmdLine->arguments[0], "env") == 0) {
+	else if (strcmp(pCmdLine->arguments[0], "history") == 0) {
+	else if (strcmp(pCmdLine->arguments[0], "set") == 0) {
+	else return pipes[pCmdLine->idx];
+	else return pipes[pCmdLine->idx -1];
+	//error
+		//error
+			//error
+				execute(line);
+		executeOneCommand(pCmdLine);
+				executeOneCommandWithoutFork(commPointer);
+			executeOneCommandWithoutFork(commPointer);
+	//executing the command
+		//executing the command
+			exit(0);
+				exit(-1);
+			exit(-1);
+			exit(-1);
+		exit(-1);
+		exit(-1);
+				fclose(stdin);
+			fclose(stdin);
+			fclose(stdin);
+	fclose(stdin);
+				fclose(stdout);
+				fclose(stdout);
+			fclose(stdout);
+		fclose(stdout);
+			// fgets(readLine, maxBuffer, stdin);
+		fgets(readLine, maxBuffer, stdin);
+		for(i=0;i<commCount-1;i++){
+	for (i = 0; i < indexH; i++)
+		for (i = 0; i < (line->argCount); i++) {
+	for (i = 0; i < line->argCount; i++) {
+	for(i=0; i<nPipes; i++){
+	for(i=0; i<nPipes; i++){
+	for (i = 0; i < (strlen(toChange) - 1); i++) {
+		foundCommand = 1;
+		foundCommand = 1;
+		foundCommand = 1;
+		foundCommand = 1;
+				fprintf(stderr, "(child%d>redirecting stdin to the read end of the pipe…)\n",i);
+				fprintf(stderr, "(child%d>redirecting stdout to the write end of the pipe…)\n",i);
+				fprintf(stderr, "(child%d>redirecting stdout to the write end of the pipe…)\n",i);
+	fprintf(stderr, "delete error: couldn't find %s\n", name );
+	fprintf(stderr, "executing command: %s\n", commPointer->arguments[0] );
+		fprintf(stderr, "executing command: %s\n", pCmdLine->arguments[0] );
+	fprintf(stderr, "find error: couldn't find %s\n", name);
+			fprintf(stderr, "pid of fork number %d: %d\n", i,pid );
+		fprintf(stderr, "pid of fork number %d: %d\n", i,pid );
+	fprintf(stderr, "pis id: %d\n", PID );
+			fprintf(stderr, "%s\n", "ho no! error in chdir!" );
+				freeCmdLines(line);
+			freeCmdLines(line);
+			freeCmdLines(line);
+		//freeCmdLines(pCmdLine);
+			//freeCmdLines(pCmdLine);
+			freeMapOfVars();
+	free (pipes);
+		free(pipes[i]);
+			free(pointer);
+		free(pointer);
+			free(pointer->name);
+		free(pointer->name);
+				free(pointer->value);
+			free(pointer->value);
+		free(pointer->value);
+		getcwd (curDir, maxBuffer);
+		if (checkForSpecialArgument(line, readLine)) {
+			if (chosenIndex <= indexH) {
+	if(commCount==1){
+	if(commPointer->inputRedirect){
+	if(commPointer->outputRedirect!=0){
+	if (execvp(commPointer->arguments[0], commPointer->arguments) == -1) {
+		if (execvp(pCmdLine->arguments[0], pCmdLine->arguments) == -1) {
+	if (foundCommand) {
+				if(leftPipe(pipes,commPointer)) 
+				if(leftPipe(pipes,commPointer)){
+	if (mapOfVars == 0) {
+		if (pCmdLine->arguments[1][0] == '~') {
+		if (pCmdLine->blocking == 1) waitpid(PID, &status, 0);
+	if(pCmdLine->idx == 0) return NULL;
+		if(pCmdLine->inputRedirect){
+if(pCmdLine->next == 0) return NULL;
+		if(pCmdLine->outputRedirect!=0){
+			if (pid == -1) {
+		if (pid == -1) {
+	if (PID == -1) {
+			if (pointer == mapOfVars) {
+		if (readLine[0] == 10) {
+			if (replaceDollar(line->arguments[i]) == -1) {
+				if(rightPipe(pipes,commPointer)) 
+				if(rightPipe(pipes,commPointer)){
+			if (strcmp(line->arguments[0], "") != 0) {
+			if (strcmp(newString, "error") == 0) {
+	if (strcmp(pCmdLine->arguments[0], "cd") == 0) {
+			if (strcmp(pointer->name, name) == 0) {
+		if (strcmp(pointer->name, name) == 0) {
+		if ((strcmp(pointer->name, name) == 0) || pointer->name == name) {
+		if (strncmp(line->arguments[0], "!", 1) == 0) {
+		if (strncmp(readLine, "quit", 4) == 0) {
+		if (toChange[i] == '$') {
+	if (toInsert[0] != '!') {
+#include "LineParser.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/wait.h>
+#include <unistd.h>
+#include <unistd.h>
+				indexH++;
+		//input redirection
+		//input redirection
+			insertToHistory(readLine);
+		insertToHistory(readLine);
+		insertToHistory(readLine);
+int checkForSpecialArgument(cmdLine *pCmdLine, char* readLine) {
+			int chosenIndex = atoi(&line->arguments[0][1]);
+	int commCount=0;
+int **createPipes(int nPipes) {
+int executeOneCommand(cmdLine *pCmdLine){
+	int foundCommand = 0;
+		int i;
+		int i;
+	int i;
+	int i;
+	int i;
+	int i;
+	int i;
+int indexH;
+int *leftPipe(int **pipes, cmdLine *pCmdLine){
+int main (int argc , char* argv[], char* envp[])
+	int** pipeArray = malloc(sizeof(int*) * nPipes);
+		int* pipefd= malloc(sizeof(int)*2);
+		int** pipes= createPipes(commCount-1);
+int replaceDollar(char* toChange) {
+int *rightPipe(int **pipes, cmdLine *pCmdLine){
+		int status;
+				int status=0;
+			int status=0;
+//It returns the pipe which feeds the process associated with the command.
+// It returns the pipe which is the sink of the associated command. 
+		//last command in the chain
+				line = parseCmdLines(history[chosenIndex]);
+} map;
+map* mapOfVars;
+		mapOfVars = malloc(sizeof(map));
+				mapOfVars = mapOfVars->next;
+		mapOfVars->name = strClone(name);
+		mapOfVars->next = 0;
+		mapOfVars->value = strClone(value);
+		map* pointer = mapOfVars;
+	map* pointer = mapOfVars;
+	map* pointer = mapOfVars;
+	map* pointer = mapOfVars;
+	map* pointer = mapOfVars;
+		map* prev = mapOfVars;
+	map* prev = mapOfVars;
+		map* temp = pointer->next;
+	// more than one commands
+	//only one command
+	//output redirection
+		//output redirection
+	//parent
+		//parent
+			//parent
+			perror("ho no! error in execv");
+		perror("ho no! error in execv");
+				perror("ho no! error in fork");
+			perror("ho no! error in fork");
+		perror("ho no! error in fork");
+			pid = fork();
+		pid = fork();
+	pid_t pid;
+	pid_t PID = fork();
+		pipeArray[i]=pipefd;
+		pipe(pipefd);
+		//pointer is null:
+		pointer = malloc(sizeof(map));
+		pointer->name = strClone(name);
+		pointer->next = 0;
+			pointer = pointer->next;
+		pointer = pointer->next;
+		pointer = pointer->next;
+		pointer = pointer->next;
+		pointerSize=pointerSize->next;
+		pointer = temp;
+				pointer->value = strClone(value);
+		pointer->value = strClone(value);
+		prev->next = pointer;
+				prev->next = pointer->next;
+			prev = pointer;
+		prev = pointer;
+	printf("----  env variables:  ----\n");
+		printf("history[%d]: %s\n", i, history[i] );
+	printf("\n");
+			// printf("%s $ ", curDir );
+		printf("%s $ ", curDir);
+		printf("%s ", line->arguments[i]);
+			printf("%s\n", "bye" );
+	printf("%s\n", "lab 6" );
+		printf("%s=%s\n", pointer->name, pointer->value);
+	printf("the Amount of commands: %d\n", commCount);
+		printHistory();
+		printVars();
+		releasePipes(pipes,commCount-1);
+				return;
+			return;
+		return 0;
+	return 0;
+	return 0;
+	return 0;
+	return 0;
+				return -1;
+		return 1;
+		return 1;
+	return "error";
+	return pipeArray;
+			return (pointer->value);
+//returns 1 if found special argument, 0 else.
+		set(pCmdLine->arguments[1], pCmdLine->arguments[2]);
+	stdin= fopen(commPointer->inputRedirect,"r");
+			stdin= fopen(pCmdLine->inputRedirect,"r");
+		stdout= fopen(commPointer->outputRedirect,"w+");
+			stdout= fopen(pCmdLine->outputRedirect,"w+");
+			strcat(toChange, newString);
+			strcpy(copy, toChange + i + 1);
+				strcpy(history[indexH], history[chosenIndex]);
+		strcpy(history[indexH++], toInsert);
+				strcpy(line->arguments[i], "");
+	struct map* next;
+// That is, the pipe that appears to the left of the process name in the command line.
+//That is, the pipe that appears to the right of the process name in the command line.
+//This function receives an array of pipes and an integer indicating the size of the array. The function releases all memory dedicated to the pipes.
+//This function receives an array of pipes and a pointer to a cmdLine structure.
+//This function receives an array of pipes and a pointer to a cmdLine structure. 
+//This function receives the number of required pipes and returns an array of pipes.
+			toChange[i] = 0;
+typedef struct map
+void delete(char* name) {
+void execute(cmdLine *pCmdLine) {
+ void executeOneCommandWithoutFork(cmdLine *commPointer){
+void freeMapOfVars() {
+void insertToHistory(char* toInsert) {
+void printCmdLine(cmdLine *line) {
+void printHistory() {
+void printVars() {
+void releasePipes(int **pipes, int nPipes){
+void set(char* name, char* value) {
+				waitpid((pid_t)pid,&status,0);
+			waitpid((pid_t)pid,&status,0);
+	while (1) {
+		while (pointer != 0) {
+	while (pointer != 0) {
+	while (pointer != 0) {
+	while (pointer != 0) {
+	while (pointer != 0) {
+	while(pointerSize){
