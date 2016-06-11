@@ -11,14 +11,28 @@
 #define YELLOW "\x1B[33m"
 #define CYAN "\x1B[36m"
 #define NATURAL   "\x1B[0m"
+void *map_start2; // will point to the start of the memory mapped file
+
+void *map_start; // will point to the start of the memory mapped file
 
 int flagDebug = 0;
 char fileName[100];
 struct stat fd_stat; //keep the size of the file
-void *map_start; // will point to the start of the memory mapped file
+
 Elf32_Ehdr *header; // this will point to the header structure
+Elf32_Ehdr *header2; // this will point to the header structure
 
 Elf32_Sym* symbolTable;
+
+struct namesList{
+    char name[100];
+    struct namesList* next;
+}namesList;
+
+void addName(char* name){
+    printf("Adding name: %s\n", name);
+}
+
 
 int fd;
 char sectionType[40];
@@ -27,14 +41,16 @@ void examine_elf_file();
 void Set_Unit_Size();
 void Print_Section_Names();
 void print_Symbols();
+void link_To();
 void quit();
+
 
 
 struct fun_desc { /*struct*/
     char *name;
     void (*fun)();
 };
-struct fun_desc menu[] = { { "Toggle Debug Mode", Toggle_Debug_Mode }, { "Examine elf file", examine_elf_file },{"Print Section Names", Print_Section_Names} ,{"Print Symbols" , print_Symbols}, { "Quit", quit}, { NULL, NULL }
+struct fun_desc menu[] = { { "Toggle Debug Mode", Toggle_Debug_Mode }, { "Examine elf file", examine_elf_file },{"Print Section Names", Print_Section_Names} ,{"Print Symbols" , print_Symbols}, { "Link to", link_To}, { "Quit", quit}, { NULL, NULL }
 };
 
 void Toggle_Debug_Mode() {
@@ -47,6 +63,81 @@ void Toggle_Debug_Mode() {
         printf("%s\n",  "Debug flag now off");
     }
 }
+
+void loadSymbolNames(){
+    Elf32_Ehdr* localHeader = (Elf32_Ehdr*) map_start2;
+    int numSections = localHeader->e_shnum;
+    Elf32_Sym* symbolTableOffset;
+    Elf32_Sym* dynimacSymbolTableOffset;
+    Elf32_Shdr* sectionHeaderIndex;
+    Elf32_Shdr* sectionHeadersTable;
+
+    char* sectionHeaderStringTable;
+    char* stringTableOffset;
+    int symbolTableSize;
+    int dynamicSymbolTableSize;
+    char* dynamicSymbolsStringTableOffset;
+
+    int dynamicSymbolsStringTableSectionHeaderIndex;
+
+    int i;
+    for (i = 0; i<numSections; i++) {
+
+        sectionHeadersTable = (Elf32_Shdr*)(map_start2 + localHeader->e_shoff + localHeader->e_shentsize*i);
+        sectionHeaderIndex = (Elf32_Shdr*)map_start2 + localHeader->e_shoff + (localHeader->e_shstrndx * localHeader->e_shentsize);
+        printf("Loading header: %d\n", i);
+
+
+        sectionHeaderStringTable = map_start2 + sectionHeaderIndex->sh_offset;
+        printf("Loading headersssss: %d\n", i);
+
+        char* sectionName = sectionHeaderStringTable + sectionHeadersTable->sh_name;
+        if(strcmp(sectionName, ".symtab") == 0){
+            symbolTableOffset = (Elf32_Sym*) (map_start2 + sectionHeadersTable->sh_offset);
+            symbolTableSize = sectionHeadersTable->sh_size;
+
+        }
+        if(strcmp(sectionName, ".dynsym") == 0){
+            dynimacSymbolTableOffset = (Elf32_Sym*) (map_start2 + sectionHeadersTable->sh_offset);
+            dynamicSymbolTableSize = sectionHeadersTable->sh_size;
+            dynamicSymbolsStringTableSectionHeaderIndex = sectionHeadersTable->sh_link;
+            printf("Index: %d\n", dynamicSymbolsStringTableSectionHeaderIndex);
+        }
+        if(strcmp(sectionName, ".strtab") == 0){
+            stringTableOffset = map_start2 + sectionHeadersTable->sh_offset;
+        }
+
+    }
+
+    sectionHeadersTable = (Elf32_Shdr*)(map_start2 + localHeader->e_shoff + localHeader->e_shentsize*dynamicSymbolsStringTableSectionHeaderIndex);
+    dynamicSymbolsStringTableOffset = map_start2 + sectionHeadersTable->sh_offset;
+
+
+    //#######################################################################
+    //Get names of dynamic symbols:
+    int numOfSymbols = dynamicSymbolTableSize/16;
+    for(i = 0; i < numOfSymbols; i++) {
+        sectionHeadersTable = (Elf32_Shdr*)(map_start2 + localHeader->e_shoff + localHeader->e_shentsize*dynimacSymbolTableOffset->st_shndx);
+        char* name = dynamicSymbolsStringTableOffset + dynimacSymbolTableOffset->st_name;
+        addName(name);
+        dynimacSymbolTableOffset++;
+    }
+    printf("\n\n\n");
+
+
+    //#######################################################################
+    //Get names of symbols:
+    numOfSymbols = symbolTableSize/16;
+    for(i = 0; i < numOfSymbols; i++) {
+        sectionHeadersTable = (Elf32_Shdr*)(map_start2 + localHeader->e_shoff + localHeader->e_shentsize*symbolTableOffset->st_shndx);
+        char * name = stringTableOffset + symbolTableOffset->st_name;
+        addName(name);
+        symbolTableOffset++;
+    }
+
+}
+
+
 
 void switchToString (Elf32_Word type){
     switch(type){
@@ -168,7 +259,6 @@ void print_Symbols(){
     char* stringTableOffset;
     int symbolTableSize;
     int dynamicSymbolTableSize;
-    Elf32_Shdr* dynamicSymbolsStringTableHeaderOffset;
     char* dynamicSymbolsStringTableOffset;
 
     int dynamicSymbolsStringTableSectionHeaderIndex;
@@ -201,7 +291,7 @@ void print_Symbols(){
 
     sectionHeadersTable = (Elf32_Shdr*)(map_start + header->e_shoff + header->e_shentsize*dynamicSymbolsStringTableSectionHeaderIndex);
     dynamicSymbolsStringTableOffset = map_start + sectionHeadersTable->sh_offset;
-
+    
 
     //#######################################################################
     //dynamic symbol table print:
@@ -211,12 +301,7 @@ void print_Symbols(){
     for(i = 0; i < numOfSymbols; i++) {
         sectionHeadersTable = (Elf32_Shdr*)(map_start + header->e_shoff + header->e_shentsize*dynimacSymbolTableOffset->st_shndx);
         char * sectionName;
-        if (0){//(dynimacSymbolTableOffset->st_shndx >= SHN_LORESERVE) {
-            sectionName = 0;
-        }
-        else{
             sectionName = (sectionHeaderStringTable + sectionHeadersTable->sh_name);
-        }
 
         printf("%d:   %-10x   %-10x   %-10s   %-10s\n",
                i, dynimacSymbolTableOffset->st_value, dynimacSymbolTableOffset->st_shndx, sectionName, (dynamicSymbolsStringTableOffset + dynimacSymbolTableOffset->st_name));
@@ -336,8 +421,45 @@ void examine_elf_file() {
 
 }
 
+void readElfFile() {
+    printf("insert a file name :\n");
+    scanf("\n%s", fileName);
+    //fgets( fileName, 100, 0);
+
+    if (flagDebug) fprintf(stderr, CYAN "Debug: file name set to: %s\n"NATURAL, fileName);
+
+
+    if (fileName == NULL) {
+        fprintf(stderr, "%s\n", "file name in null");
+        return;
+    }
+    else {
+        fd = open(fileName, O_RDONLY);
+        if (fd < 0) {
+            fprintf(stderr, "%s didn't open\n", fileName);
+        }
+        if (fstat(fd, &fd_stat) != 0) {
+            perror("stat failed");
+            exit(-1);
+        }
+        if ((map_start2 = mmap(0, fd_stat.st_size, PROT_READ, MAP_PRIVATE, fd, 0)) == MAP_FAILED) {
+            perror("mmap failed");
+            munmap(map_start2, fd_stat.st_size);
+
+            exit(-1);
+        }
+
+    }
+}
+
+void link_To() {
+    readElfFile();
+    loadSymbolNames();
+}
+
 void quit() {
     munmap(map_start, fd_stat.st_size);
+    munmap(map_start2, fd_stat.st_size);
     close(fd);
     if (flagDebug) fprintf( stderr, CYAN"%s\n"NATURAL, "Debug: quitting"  );
     exit(0);

@@ -54,94 +54,94 @@ void switchToString (Elf32_Word type){
 				break;
 			case 2:
 				strcpy(sectionType, "SYMTAB");
-				break; 
+				break;
 			case 3:
 				strcpy(sectionType, "STRTAB");
-				break; 
+				break;
 			case 4:
 				strcpy(sectionType, "RELA");
-				break; 
+				break;
 			case 5:
 				strcpy(sectionType, "HASH");
-				break; 
+				break;
 			case 6:
 				strcpy(sectionType, "DYNAMIC");
-				break; 
+				break;
 			case 7:
 				strcpy(sectionType, "NOTE");
-				break; 
+				break;
 			case 8:
 				strcpy(sectionType, "NOBITS");
-				break; 
+				break;
 			case 9:
 				strcpy(sectionType, "REL");
-				break; 
+				break;
 			case 10:
 				strcpy(sectionType, "SHLIB");
-				break; 
+				break;
 			case 11:
 				strcpy(sectionType, "DYNSYM");
-				break;  
+				break;
 			case 14:
 				strcpy(sectionType, "INIT");
-				break; 
+				break;
 			case 15:
 				strcpy(sectionType, "FINI");
-				break; 
+				break;
 			case 16:
 				strcpy(sectionType, "PREINIT");
-				break; 
+				break;
 			case 17:
 				strcpy(sectionType, "GROUP");
-				break; 
+				break;
 			case 18:
 				strcpy(sectionType, "SHNDX");
-				break; 
+				break;
 			case 19:
 				strcpy(sectionType, "NUM");
-				break; 
+				break;
 			case 0x60000000:
 				strcpy(sectionType, "LOOS");
-				break; 
+				break;
 			case 0x6ffffff5:
 				strcpy(sectionType, "ATTRIBUTES");
-				break; 
+				break;
 			case 0x6ffffff6:
 				strcpy(sectionType, "HASH");
-				break; 
+				break;
 			case 0x6ffffff7:
 				strcpy(sectionType, "LIBLIST");
-				break; 
+				break;
 			case 0x6ffffff8:
 				strcpy(sectionType, "CHECKSUM");
-				break; 
+				break;
 			case 0x6ffffffa:
 				strcpy(sectionType, "LOSUNW");
-				break; 
+				break;
 			case 0x6ffffffb:
 				strcpy(sectionType, "COMDAT");
-				break; 
+				break;
 			case 0x6ffffffc:
 				strcpy(sectionType, "SYMINFO");
-				break; 
+				break;
 			case 0x6ffffffd:
 				strcpy(sectionType, "VERDEF");
-				break; 
+				break;
 			case 0x6ffffffe:
 				strcpy(sectionType, "VERNEED");
-				break; 
+				break;
 			case 0x6fffffff:
 				strcpy(sectionType, "VERSYM");
-				break;  
+				break;
 			case 0x70000000:
 				strcpy(sectionType, "LOPROC");
-				break;   
+				break;
 			case 0x7fffffff:
 				strcpy(sectionType, "HIPROC");
-				break;   
+				break;
 			case 0x80000000:
 				strcpy(sectionType, "LOUSER");
-				break;   
+				break;
 			case 0x8fffffff:
 				strcpy(sectionType, "HIUSER");
 				break;
@@ -170,7 +170,7 @@ void Print_Section_Names(){
 		switchToString(sectionHeadersTable->sh_type);
 		printf("[%02d]   %-20s   %-20x   %-20d   %-25d   %-15s\n",
 				i, sectionName, sectionHeadersTable->sh_addr, sectionHeadersTable->sh_offset, sectionHeadersTable->sh_size, sectionType);
-		
+
 	}
 	printf(NATURAL"%s\n","");
 
@@ -187,15 +187,15 @@ void examine_elf_file() {
 
 	if (flagDebug) fprintf( stderr,CYAN "Debug: file name set to: %s\n"NATURAL, fileName );
 
-	
+
 	if (fileName == NULL) {
 		fprintf(stderr, "%s\n", "file name in null" );
 		return;
 	}
 	else {
-		fd = open(fileName, O_RDONLY); 
+		fd = open(fileName, O_RDONLY);
 		if (fd <0) {
-			fprintf(stderr, "%s didn't open\n",fileName); 
+			fprintf(stderr, "%s didn't open\n",fileName);
 		}
 		if (fstat(fd, &fd_stat) != 0 ) {
 	      perror("stat failed");
